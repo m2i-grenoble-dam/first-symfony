@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exo Twig</title>
+</head>
+<body>
+    <h1>Exo Twig</h1>
+    {% for item in names %}
+        <p>{{item}}</p>
+    {% endfor %}
+    
+    {% if names|length > 3 %}
+        <p>The array contains more than 3 names</p>
+    {% endif %}
+</body>
+</html>

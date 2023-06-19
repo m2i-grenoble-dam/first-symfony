@@ -13,4 +13,13 @@ class FirstController extends AbstractController {
             "isOk" => true
         ]);
     }
+
+    #[Route("/exo-twig")]
+    public function exoTwig() {
+        $names = ["Name 1", "Name 2", "Name 3", "Name 4"];
+
+        return $this->render("exo-twig.html.twig", [
+            "names" => $names
+        ]);
+    }
 }
