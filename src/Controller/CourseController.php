@@ -20,7 +20,7 @@ class CourseController extends AbstractController
     {
         dump($repo->findAll()); //Un genre de var_dump "amélioré" qui affiche les informations dans la console symfony, ne marche qu'avec twig
         return $this->render('course/index.html.twig', [
-            'controller_name' => 'CourseController',
+            'courses' => $repo->findAll()
         ]);
     }
 }
