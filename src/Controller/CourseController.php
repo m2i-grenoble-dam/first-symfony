@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Course;
+use App\Form\AddCourseType;
 use App\Repository\CourseRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,6 +38,7 @@ class CourseController extends AbstractController
     
     #[Route("/add-course")]
     public function add(CourseRepository $repo, Request $request):Response {
+        //On récupère toutes les valeurs du formulaires (peut être rien s'il n'a pas encore été submit)
         $formData = $request->request->all();
         //Si le formulaire a été submit et donc contient des données
         if(!empty($formData)) {
@@ -47,6 +49,22 @@ class CourseController extends AbstractController
             return $this->redirect('/course/'.$course->getId());
         }
         return $this->render('course/add-course.html.twig', [
+        ]);
+    }
+
+    #[Route("/add-with-form")]
+    public function addWithForm(CourseRepository $repo, Request $request):Response {
+        $form = $this->createForm(AddCourseType::class);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $course = $form->getData();
+            $course->setPublished(new \DateTime());
+            $repo->persist($course);
+        }
+
+        return $this->render('course/add-course-with-form.html.twig', [
+            'form' => $form
         ]);
     }
 }

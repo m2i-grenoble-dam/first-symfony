@@ -5,10 +5,10 @@ use DateTime;
 
 class Course {
     public function __construct(
-    private string $title,
-    private string $content,
-    private DateTime $published,
-    private string $subject,
+    private string $title= '',
+    private string $content = '',
+    private ?DateTime $published = null,
+    private ?string $subject = '',
     private ?int $id = null) {}
 
 	/**
@@ -62,7 +62,7 @@ class Course {
 	/**
 	 * @return DateTime
 	 */
-	public function getPublished(): DateTime {
+	public function getPublished(): ?DateTime {
 		return $this->published;
 	}
 	
@@ -70,7 +70,7 @@ class Course {
 	 * @param DateTime $published 
 	 * @return self
 	 */
-	public function setPublished(DateTime $published): self {
+	public function setPublished(?DateTime $published): self {
 		$this->published = $published;
 		return $this;
 	}
