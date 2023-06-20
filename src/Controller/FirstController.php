@@ -51,7 +51,7 @@ class FirstController extends AbstractController {
 
     #[Route("/form-example")]
     public function formExample(Request $request) {
-        dump($request->request->get('truc'));
+        dump($request->request->all());
         return $this->render('form-example.html.twig');
     }
 

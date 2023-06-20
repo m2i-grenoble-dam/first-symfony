@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Course;
 use App\Repository\CourseRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -23,13 +25,28 @@ class CourseController extends AbstractController
             'courses' => $repo->findAll()
         ]);
     }
-    //http://localhost:8000/course/3
+    
     #[Route("/course/{id}")]
     public function one(int $id, CourseRepository $repo):Response {
         $course = $repo->findById($id);
 
         return $this->render('course/single-course.html.twig', [
             'course' => $course
+        ]);
+    }
+    
+    #[Route("/add-course")]
+    public function add(CourseRepository $repo, Request $request):Response {
+        $formData = $request->request->all();
+        //Si le formulaire a été submit et donc contient des données
+        if(!empty($formData)) {
+            //alors on fait le persist avec les valeurs du formulaire maintenant que je suis sûr qu'il a été submit
+            $course = new Course($formData['title'],$formData['content'], new \DateTime(), $formData['subject']);
+            $repo->persist($course);
+            //pourquoi pas faire une petite redirection vers la page du course que l'on vient de créer une fois persisté
+            return $this->redirect('/course/'.$course->getId());
+        }
+        return $this->render('course/add-course.html.twig', [
         ]);
     }
 }

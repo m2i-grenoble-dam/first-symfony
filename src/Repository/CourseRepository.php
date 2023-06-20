@@ -42,4 +42,16 @@ class CourseRepository {
         }
         return null;
     }
+
+    public function persist(Course $course) {
+        $connection = Database::getConnection();
+        $query = $connection->prepare("INSERT INTO course (title,subject,content,published) VALUES (:title,:subject,:content,:published)");
+        $query->bindValue(':title', $course->getTitle());
+        $query->bindValue(':subject', $course->getSubject());
+        $query->bindValue(':content', $course->getContent());
+        $query->bindValue(':published', $course->getPublished()->format('Y-m-d H:i:s'));
+        $query->execute();
+
+        $course->setId($connection->lastInsertId());
+    }
 }
