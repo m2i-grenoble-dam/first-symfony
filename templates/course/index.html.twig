@@ -3,7 +3,9 @@
 {% block title %}All Courses!{% endblock %}
 
 {% block body %}
-
+{% if courses is empty %}
+    <p>No courses found.</p>
+{% endif %}
 <div class="row">
     {% for item in courses %}
         <div class="col-md-3">

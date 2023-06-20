@@ -19,11 +19,17 @@ class CourseController extends AbstractController
      * de procéder de cette manière). C'est ce qu'on appelle "L'injection de dépendance"
      */
     #[Route('/course', name: 'app_course')]
-    public function index(CourseRepository $repo): Response
+    public function index(CourseRepository $repo, Request $request): Response
     {
-        dump($repo->findAll()); //Un genre de var_dump "amélioré" qui affiche les informations dans la console symfony, ne marche qu'avec twig
+        if($request->query->has('search')) {
+            $course = $repo->search($request->query->get('search'));
+            
+        } else {
+            $course = $repo->findAll();
+        }
+        // dump($repo->findAll()); //Un genre de var_dump "amélioré" qui affiche les informations dans la console symfony, ne marche qu'avec twig
         return $this->render('course/index.html.twig', [
-            'courses' => $repo->findAll()
+            'courses' => $course
         ]);
     }
     

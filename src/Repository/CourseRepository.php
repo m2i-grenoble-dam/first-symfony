@@ -25,6 +25,24 @@ class CourseRepository {
         }
         return $list;
     }
+    /**
+     * Récupère tous les cours selon un terme de recherche
+     * @return Course[]
+     */
+    public function search(string $term):array{
+
+        $list = [];
+        $connection = Database::getConnection();
+        $query = $connection->prepare("SELECT * FROM course WHERE CONCAT(title,content,subject) LIKE :term");
+        $query->bindValue(':term', '%'.$term.'%');
+
+        $query->execute();
+
+        foreach ( $query->fetchAll() as $line) {
+            $list[] = new Course($line['title'], $line['content'], new DateTime($line['published']), $line['subject'], $line['id']);
+        }
+        return $list;
+    }
     
     /**
      * Récupère un cours spécifique par son id
