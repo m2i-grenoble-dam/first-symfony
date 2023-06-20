@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Course - {{course.title}}{% endblock %}
+
+{% block body %}
+
+<h1>{{course.title}}</h1>
+<p>{{course.subject}}</p>
+<p>{{course.published|date('d/m/Y')}}</p>
+<p>{{course.content}}</p>
+
+{% endblock %}

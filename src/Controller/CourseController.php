@@ -23,4 +23,13 @@ class CourseController extends AbstractController
             'courses' => $repo->findAll()
         ]);
     }
+    //http://localhost:8000/course/3
+    #[Route("/course/{id}")]
+    public function one(int $id, CourseRepository $repo):Response {
+        $course = $repo->findById($id);
+
+        return $this->render('course/single-course.html.twig', [
+            'course' => $course
+        ]);
+    }
 }
