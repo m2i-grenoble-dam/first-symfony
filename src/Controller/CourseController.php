@@ -29,6 +29,7 @@ class CourseController extends AbstractController
     #[Route("/course/{id}")]
     public function one(int $id, CourseRepository $repo):Response {
         $course = $repo->findById($id);
+        
 
         return $this->render('course/single-course.html.twig', [
             'course' => $course
@@ -47,6 +48,23 @@ class CourseController extends AbstractController
             return $this->redirect('/course/'.$course->getId());
         }
         return $this->render('course/add-course.html.twig', [
+        ]);
+    }
+        
+    #[Route("/update-course/{id}")]
+    public function update(int $id, CourseRepository $repo, Request $request):Response {
+        $course = $repo->findById($id);
+        $formData = $request->request->all();
+        if(!empty($formData)) {
+            $course->setTitle($formData['title'])
+                    ->setSubject($formData['subject'])
+                    ->setContent($formData['content']);
+
+            $repo->update($course);
+        }
+
+        return $this->render('course/update-course.html.twig', [
+            'course' => $course
         ]);
     }
 }

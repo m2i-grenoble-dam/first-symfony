@@ -54,4 +54,16 @@ class CourseRepository {
 
         $course->setId($connection->lastInsertId());
     }
+    public function update(Course $course) {
+        $connection = Database::getConnection();
+        $query = $connection->prepare("UPDATE course SET title=:title, content=:content, published=:published, subject=:subject WHERE id=:id");
+        $query->bindValue(':title', $course->getTitle());
+        $query->bindValue(':subject', $course->getSubject());
+        $query->bindValue(':content', $course->getContent());
+        $query->bindValue(':published', $course->getPublished()->format('Y-m-d H:i:s'));
+        $query->bindValue(':id', $course->getId());
+        $query->execute();
+
+        
+    }
 }
