@@ -2,6 +2,7 @@
  
 namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -46,6 +47,12 @@ class FirstController extends AbstractController {
         return $this->render("exo-twig.html.twig", [
             "names" => $names
         ]);
+    }
+
+    #[Route("/form-example")]
+    public function formExample(Request $request) {
+        dump($request->request->get('truc'));
+        return $this->render('form-example.html.twig');
     }
 
 }
