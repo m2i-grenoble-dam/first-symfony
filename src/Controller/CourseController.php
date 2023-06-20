@@ -73,4 +73,12 @@ class CourseController extends AbstractController
             'course' => $course
         ]);
     }
+    
+    #[Route("/remove-course/{id}")]
+    public function remove(int $id, CourseRepository $repo):Response {
+        $repo->delete($id);
+
+        return $this->redirect('/course');
+    
+    }
 }

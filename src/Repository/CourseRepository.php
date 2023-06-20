@@ -3,6 +3,7 @@
 namespace App\Repository;
 use App\Entity\Course;
 use DateTime;
+use phpDocumentor\Reflection\Types\Void_;
 
 
 class CourseRepository {
@@ -43,7 +44,7 @@ class CourseRepository {
         return null;
     }
 
-    public function persist(Course $course) {
+    public function persist(Course $course):void {
         $connection = Database::getConnection();
         $query = $connection->prepare("INSERT INTO course (title,subject,content,published) VALUES (:title,:subject,:content,:published)");
         $query->bindValue(':title', $course->getTitle());
@@ -54,7 +55,7 @@ class CourseRepository {
 
         $course->setId($connection->lastInsertId());
     }
-    public function update(Course $course) {
+    public function update(Course $course):void {
         $connection = Database::getConnection();
         $query = $connection->prepare("UPDATE course SET title=:title, content=:content, published=:published, subject=:subject WHERE id=:id");
         $query->bindValue(':title', $course->getTitle());
@@ -65,5 +66,14 @@ class CourseRepository {
         $query->execute();
 
         
+    }
+
+    public function delete(int $id):void{
+
+        $connection = Database::getConnection();
+        $query = $connection->prepare("DELETE FROM course WHERE id=:id");
+        $query->bindValue(':id', $id);
+        $query->execute();
+
     }
 }
