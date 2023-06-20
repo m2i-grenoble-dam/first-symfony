@@ -7,6 +7,7 @@ use App\Repository\CourseRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CourseController extends AbstractController
@@ -29,7 +30,9 @@ class CourseController extends AbstractController
     #[Route("/course/{id}")]
     public function one(int $id, CourseRepository $repo):Response {
         $course = $repo->findById($id);
-        
+        if($course == null) {
+            throw new NotFoundHttpException("No course found with this id");
+        }
 
         return $this->render('course/single-course.html.twig', [
             'course' => $course
@@ -54,6 +57,9 @@ class CourseController extends AbstractController
     #[Route("/update-course/{id}")]
     public function update(int $id, CourseRepository $repo, Request $request):Response {
         $course = $repo->findById($id);
+        if($course == null) {
+            throw new NotFoundHttpException("No course found with this id");
+        }
         $formData = $request->request->all();
         if(!empty($formData)) {
             $course->setTitle($formData['title'])
